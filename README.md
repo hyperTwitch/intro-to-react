@@ -4,7 +4,8 @@ This project is done based off of the official React JS tic-tact-toe tutorial ht
 
 Features added to explore and practice further.
 - When no one wins, display a message and mark it in the history
-- Highlight the currently displayed step in the history by bolding it
+- Highlight the move currently displayed on the board in the history by bolding it
+- Allow the user to toggle the display order of the history items between ascending and descending
 
 ## `npm start`
 
