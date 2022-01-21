@@ -44,7 +44,8 @@ class Game extends React.Component {
 		this.state = {
 			history: [
 				{
-					squares: Array(9).fill(null)
+					squares: Array(9).fill(null),
+					squareForMove: null
 				}
 			],
 			stepNumber: 0,
@@ -68,7 +69,8 @@ class Game extends React.Component {
 		this.setState({
 			history: history.concat([
 				{
-					squares: squares
+					squares: squares,
+					squareForMove: i
 				}
 			]),
 			stepNumber: history.length,
@@ -102,11 +104,19 @@ class Game extends React.Component {
 			if (move === 0) {
 				desc = "Go to game start";
 			}
-			else if (fullBoard && move === history.length - 1) {
+			// If this history item is the most recent move and the board is in a winner state, mark it
+			else if (move === history.length - 1 && winner) {
+				desc = `Go to ${winner} won`;
+			}
+			// If this history item is the most recent move and the board is full, mark it
+			else if (move === history.length - 1 && fullBoard) {
 				desc = "Go to game over";
 			}
+			// Otherwise, add the move to the list along with the (x,y) position that was taken during the move
 			else {
-				desc = "Go to move #" + move;
+				// row is determined by rounding down the square position by the board width (3)
+				// column is determined by the square position mods the board width (3)
+				desc = `Go to move #${move} (` + Math.floor(step.squareForMove / 3) + "," + (step.squareForMove % 3) + ")";
 			}
 			return (
 				<li key={move}>

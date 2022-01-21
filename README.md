@@ -6,6 +6,7 @@ Features added to explore and practice further.
 - When no one wins, display a message and mark it in the history
 - Highlight the move currently displayed on the board in the history by bolding it
 - Allow the user to toggle the display order of the history items between ascending and descending
+- Add the position made for each move to the history list
 
 ## `npm start`
 
