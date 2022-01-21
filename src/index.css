@@ -1,6 +1,6 @@
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+font: 14px "Century Gothic", Futura, sans-serif;
+margin: 20px;
 }
 
 ol, ul {
@@ -31,13 +31,8 @@ ol, ul {
   text-align: center;
   width: 34px;
 }
-
 .square:focus {
   outline: none;
-}
-
-.kbd-navigation .square:focus {
-  background: #ddd;
 }
 
 .game {
@@ -47,4 +42,8 @@ ol, ul {
 
 .game-info {
   margin-left: 20px;
+}
+
+.game-info .currentStep {
+  font-weight: bold;
 }
