@@ -48,7 +48,8 @@ class Game extends React.Component {
 				}
 			],
 			stepNumber: 0,
-			xIsNext: true
+			xIsNext: true,
+			historyIsReversed: false
 		};
 	}
 
@@ -56,9 +57,13 @@ class Game extends React.Component {
 		const history = this.state.history.slice(0, this.state.stepNumber + 1);
 		const current = history[history.length - 1];
 		const squares = current.squares.slice();
+
+		// exit early if there is already a winner or if square is already filled
 		if (calculateWinner(squares) || squares[i]) {
 			return;
 		}
+
+		// otherwise, set value for square
 		squares[i] = this.state.xIsNext ? "X" : "O";
 		this.setState({
 			history: history.concat([
@@ -74,7 +79,13 @@ class Game extends React.Component {
 	jumpTo(step) {
 		this.setState({
 			stepNumber: step,
-			xIsNext: (step % 2) === 0
+			xIsNext: (step % 2) === 0	// is the move number is evenly divisible by 2 then X is next
+		});
+	}
+
+	changeHistoryOrder() {
+		this.setState( {
+			historyIsReversed: !this.state.historyIsReversed
 		});
 	}
 
@@ -84,7 +95,9 @@ class Game extends React.Component {
 		const winner = calculateWinner(current.squares);
 		const fullBoard = calculateFullBoard(current.squares);
 
+		// create a history of moves list to display
 		const moves = history.map((step, move) => {
+			// Determine the button description based on the state of the game
 			let desc;
 			if (move === 0) {
 				desc = "Go to game start";
@@ -102,6 +115,12 @@ class Game extends React.Component {
 			);
 		});
 
+		// reverse the history if it should be
+		if(this.state.historyIsReversed) {
+			moves.reverse();
+		}
+
+		// check if anyone has won in the most recent state
 		let status;
 		if (winner) {
 			status = "Winner: " + winner;
@@ -120,6 +139,7 @@ class Game extends React.Component {
 				</div>
 				<div className="game-info">
 					<div>{status}</div>
+					<button onClick={() => this.changeHistoryOrder()}>Reverse History Order</button>
 					<ol>{moves}</ol>
 				</div>
 			</div>
