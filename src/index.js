@@ -38,7 +38,9 @@ class Game extends React.Component {
 			history: [
 				{
 					squares: Array(9).fill(null),
-					squareForMove: null
+					squareForMove: null,
+					winner: false,
+					fullBoard: false
 				}
 			],
 			stepNumber: 0,
@@ -53,7 +55,7 @@ class Game extends React.Component {
 		const squares = current.squares.slice();
 
 		// exit early if there is already a winner or if square is already filled
-		if (calculateWinner(squares) || squares[i]) {
+		if (squares[i] || !(!current.winner)) {
 			return;
 		}
 
@@ -63,7 +65,9 @@ class Game extends React.Component {
 			history: history.concat([
 				{
 					squares: squares,
-					squareForMove: i
+					squareForMove: i,
+					winner: calculateWinner(squares),
+					fullBoard: calculateFullBoard(squares)
 				}
 			]),
 			stepNumber: history.length,
@@ -87,29 +91,32 @@ class Game extends React.Component {
 	render() {
 		const history = this.state.history;
 		const current = history[this.state.stepNumber];
-		const winner = calculateWinner(current.squares);
-		const fullBoard = calculateFullBoard(current.squares);
+		const winner = current.winner;
+		const fullBoard = current.fullBoard;
 
 		// create a history of moves list to display
 		const moves = history.map((step, move) => {
+			const winnerStep = step.winner;
+			const fullStep = step.fullBoard;
+
 			// Determine the button description based on the state of the game
 			let desc;
 			if (move === 0) {
 				desc = "Go to game start";
 			}
 			// If this history item is the most recent move and the board is in a winner state, mark it
-			else if (move === history.length - 1 && winner) {
-				desc = `Go to ${winner.marker} won`;
+			else if (winnerStep) {
+				desc = `Go to ${winnerStep.marker} won`;
 			}
 			// If this history item is the most recent move and the board is full, mark it
-			else if (move === history.length - 1 && fullBoard) {
+			else if (fullStep) {
 				desc = "Go to game over";
 			}
 			// Otherwise, add the move to the list along with the (x,y) position that was taken during the move
 			else {
-				// row is determined by rounding down the square position by the board width (3)
-				// column is determined by the square position mods the board width (3)
-				desc = `Go to move #${move} (` + Math.floor(step.squareForMove / 3) + "," + (step.squareForMove % 3) + ")";
+				// column is determined by rounding down the square position divided by the board width (3)
+				// row is determined by the square position mods the board width (3)
+				desc = `Go to move #${move} (` + (step.squareForMove % 3) + "," + Math.floor(step.squareForMove / 3) + ")";
 			}
 			return (
 				<li key={move}>
