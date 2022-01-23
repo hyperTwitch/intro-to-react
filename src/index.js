@@ -4,34 +4,34 @@ import './index.css';
 
 function Square(props) {
 	return (
-		<button className="square" onClick={props.onClick}>
+		<button className={"square" + props.winner} onClick={props.onClick}>
 			{props.value}
 		</button>
 	);
 }
 
 class Board extends React.Component {
-	renderSquare(i) {
-		return <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} />;
+	renderSquare(i, winHighlight) {
+		return <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} winner={winHighlight ? " winner" : ""} />;
 	}
 
 	render() {
 		return (
 			<div>
 				<div className="board-row">
-					{this.renderSquare(0)}
-					{this.renderSquare(1)}
-					{this.renderSquare(2)}
+					{this.renderSquare(0, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(0) >= 0 : false)}
+					{this.renderSquare(1, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(1) >= 0 : false)}
+					{this.renderSquare(2, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(2) >= 0 : false)}
 				</div>
 				<div className="board-row">
-					{this.renderSquare(3)}
-					{this.renderSquare(4)}
-					{this.renderSquare(5)}
+					{this.renderSquare(3, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(3) >= 0 : false)}
+					{this.renderSquare(4, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(4) >= 0 : false)}
+					{this.renderSquare(5, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(5) >= 0 : false)}
 				</div>
 				<div className="board-row">
-					{this.renderSquare(6)}
-					{this.renderSquare(7)}
-					{this.renderSquare(8)}
+					{this.renderSquare(6, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(6) >= 0 : false)}
+					{this.renderSquare(7, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(7) >= 0 : false)}
+					{this.renderSquare(8, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(8) >= 0 : false)}
 				</div>
 			</div>
 		);
@@ -106,7 +106,7 @@ class Game extends React.Component {
 			}
 			// If this history item is the most recent move and the board is in a winner state, mark it
 			else if (move === history.length - 1 && winner) {
-				desc = `Go to ${winner} won`;
+				desc = `Go to ${winner.marker} won`;
 			}
 			// If this history item is the most recent move and the board is full, mark it
 			else if (move === history.length - 1 && fullBoard) {
@@ -133,7 +133,7 @@ class Game extends React.Component {
 		// check if anyone has won in the most recent state
 		let status;
 		if (winner) {
-			status = "Winner: " + winner;
+			status = "Winner: " + winner.marker;
 		}
 		else if(fullBoard) {
 			status = 'Draw: No more moves';
@@ -145,7 +145,7 @@ class Game extends React.Component {
 		return (
 			<div className="game">
 				<div className="game-board">
-					<Board squares={current.squares} onClick={i => this.handleClick(i)} />
+					<Board squares={current.squares} onClick={i => this.handleClick(i)} winHighlightList={winner ? winner.wonWith : false} />
 				</div>
 				<div className="game-info">
 					<div>{status}</div>
@@ -179,7 +179,7 @@ function calculateWinner(squares) {
 	for (let i = 0; i < lines.length; i++) {
 		const [a, b, c] = lines[i];
 		if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-			return squares[a];
+			return { marker: squares[a], wonWith: lines[i] };
 		}
 	}
 	return null;

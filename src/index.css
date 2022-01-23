@@ -1,6 +1,6 @@
 body {
-font: 14px "Century Gothic", Futura, sans-serif;
-margin: 20px;
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
 }
 
 ol, ul {
@@ -33,6 +33,9 @@ ol, ul {
 }
 .square:focus {
   outline: none;
+}
+.square.winner {
+  background-color: #a3ffa3;
 }
 
 .game {

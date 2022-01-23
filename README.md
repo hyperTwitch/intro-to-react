@@ -7,6 +7,8 @@ Features added to explore and practice further.
 - Highlight the move currently displayed on the board in the history by bolding it
 - Allow the user to toggle the display order of the history items between ascending and descending
 - Add the position made for each move to the history list
+- When someone wins, mark it in the history
+- When someone wins, highlight the squares that form the win on the board
 
 ## `npm start`
 
