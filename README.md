@@ -9,6 +9,7 @@ Features added to explore and practice further.
 - Add the position made for each move to the history list
 - When someone wins, mark it in the history
 - When someone wins, highlight the squares that form the win on the board
+- Create the board via loops instead of hard coding the creation of each square
 
 ## `npm start`
 

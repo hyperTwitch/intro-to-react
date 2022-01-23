@@ -11,30 +11,23 @@ function Square(props) {
 }
 
 class Board extends React.Component {
-	renderSquare(i, winHighlight) {
-		return <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} winner={winHighlight ? " winner" : ""} />;
+	renderSquare(squareIndex, winHighlight) {
+		return <Square key={squareIndex} value={this.props.squares[squareIndex]} onClick={() => this.props.onClick(squareIndex)} winner={winHighlight ? " winner" : ""} />;
 	}
 
 	render() {
-		return (
-			<div>
-				<div className="board-row">
-					{this.renderSquare(0, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(0) >= 0 : false)}
-					{this.renderSquare(1, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(1) >= 0 : false)}
-					{this.renderSquare(2, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(2) >= 0 : false)}
-				</div>
-				<div className="board-row">
-					{this.renderSquare(3, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(3) >= 0 : false)}
-					{this.renderSquare(4, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(4) >= 0 : false)}
-					{this.renderSquare(5, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(5) >= 0 : false)}
-				</div>
-				<div className="board-row">
-					{this.renderSquare(6, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(6) >= 0 : false)}
-					{this.renderSquare(7, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(7) >= 0 : false)}
-					{this.renderSquare(8, this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(8) >= 0 : false)}
-				</div>
-			</div>
-		);
+		const board = [];
+		for(let rowIndex = 0; rowIndex < 3; rowIndex++) {
+			let row = [];
+			for(let colIndex = 0; colIndex < 3; colIndex++) {
+				// The current square we are looking at will by the row number * width of the board + the location of the square in the current row
+				let squareToRender = rowIndex * 3 + colIndex;
+				let highlight = this.props.winHighlightList !== false ? this.props.winHighlightList.indexOf(squareToRender) >= 0 : false;
+				row.push(this.renderSquare(squareToRender, highlight));
+			}
+			board.push(<div key={rowIndex} className="board-row">{row}</div>);
+		}
+		return <div>{board}</div>;
 	}
 }
 
