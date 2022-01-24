@@ -10,6 +10,8 @@ Features added to explore and practice further.
 - When someone wins, mark it in the history
 - When someone wins, highlight the squares that form the win on the board
 - Create the board via loops instead of hard coding the creation of each square
+- Update board creation and winner calculation algorithms to work with an arbitrary board size passed into the initial game state
+	- TODO: determine a method to pass the board size in to the game. form entry? URL query string?
 
 ## `npm start`
 
